@@ -1,0 +1,12 @@
+div.ui-page-active ul.endless li span.realText {
+    display: inline;
+}
+div.ui-page-active ul.endless li span.loadingMessage {
+    display: none;
+}
+div.ui-page-active ul.endless.loading li:last-child span.realText {
+    display: none;
+}
+div.ui-page-active ul.endless.loading li:last-child span.loadingMessage {
+    display: inline;
+}

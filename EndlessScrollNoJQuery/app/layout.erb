@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+    <title>EndlessScroll</title>
+
+    <% is_bb6 = System::get_property('platform') == 'Blackberry' && (System::get_property('os_version').split('.')[0].to_i >= 6) %>
+
+    <% if is_bb6 %>
+        <meta name="viewport" content="width=device-width; height=device-height; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+    <% else %>
+        <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+    <% end %>
+
+
+	  <link href="/public/css/main.css" type="text/css" rel="stylesheet"/>
+
+    <link href="/public/css/application.css" type="text/css" rel="stylesheet"/>
+
+    <script src="/public/js/rho.js" type="text/javascript"></script>
+
+</head>
+
+<body
+<% if is_bb6 %>
+	data-do-fix-forms="true"
+<% elsif System::get_property('platform') == 'WP7' %>
+	onload="wp7_change_forms_action_to_get()"
+<% end %>
+	>
+    <%= @content %>
+</body>
+
+</html>

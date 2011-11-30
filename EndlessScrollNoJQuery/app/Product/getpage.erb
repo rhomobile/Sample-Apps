@@ -1,0 +1,10 @@
+<% @products.each do |product| %>
+      
+    <li>
+      <a href="<%= url_for :action => :show, :id => product.object %>">
+        <span class="realText"><%= product.name %></span>
+        <span class="loadingMessage">Loading more..</span>
+      </a>
+    </li>
+      
+<% end %>
