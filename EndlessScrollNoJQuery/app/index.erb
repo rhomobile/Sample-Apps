@@ -2,12 +2,21 @@
 
   <div data-role="header" data-position="inline" style="margin-bottom: 15px">
     <h1>EndlessScroll</h1>
-
   </div>
 
   <div data-role="content">
-      <a class="ui-btn-left" style="clear:left; margin:2px;" href="Product/generate">Generate Records</a>
-      <a class="ui-btn-left" style="clear:left; margin:2px;" href="Product">Products</a>
+      <a class="ui-btn-left" style="clear:left; margin:2px;" href="Product/generate">Generate Records</a><br/><br/>
+      <a class="ui-btn-left" style="clear:left; margin:2px;" href="Product">Products</a><br/><br/>
+      <a class="ui-btn-left" style="clear:left; margin:2px;" href="Product/indexSearch">Ajax Search 500/50</a><br/><br/>
+      <a class="ui-btn-left" style="clear:left; margin:2px;" href="Product/indexSearch100">Ajax Search 100/100</a><br/><br/>
+      <a class="ui-btn-left" style="clear:left; margin:2px;" href="Product/indexSearch500">Ajax Search 500/500</a><br/><br/>
+      <a class="ui-btn-left" style="clear:left; margin:2px;" href="#" onclick="ajaxtest();">Concurrent Test</a><br/><br/>
+      <ul id="concurrent" style="font-size: 10px;">
+        <li><%= System.get_property('device_name') %></li>
+        <li><%= System.get_property('real_screen_width') %></li>
+        <li><%= System.get_property('real_screen_height') %></li>
+        <li><%= System.get_property('screen_orientation') %></li>
+      </ul>
   </div>
 
 </div>

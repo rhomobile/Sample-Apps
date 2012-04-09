@@ -1,0 +1,14 @@
+<% i = 0 %>
+<% @products.each do |product| %>
+
+    <li style="background: <%= i % 2 == 0 ? "#f5f5f5" : "#fff" %>; height: 48px;">
+      <a href="<%= url_for :action => :show, :id => product.object %>">
+      <img src="/public/images/cart_icon.png"></img>
+        <h1><%= product.name %></h1>
+        <p><%= product.brand %></p>
+        <p><%= product.price %></p>
+        
+      </a>
+    </li>
+<% i = i + 1 %>
+<% end %>

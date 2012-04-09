@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+    <title>EndlessScroll</title>
+
+    <% is_bb6 = System::get_property('platform') == 'Blackberry' && (System::get_property('os_version').split('.')[0].to_i >= 6) %>
+
+    <% if is_bb6 %>
+        <meta name="viewport" content="width=device-width; height=device-height; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+    <% else %>
+        <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+    <% end %>
+
+    <% if System::get_property('platform') == 'WP7' %>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <% end %>
+
+    <% if System::get_property('platform') == 'APPLE' || System::get_property('platform') == 'ANDROID' || is_bb6 || ( System::get_property('platform') == 'UNKNOWN' && System::get_property('webview_framework') =~ /^WEBKIT/) %>
+        <script src="/public/jquery/jquery-1.6.4.js" type="text/javascript"></script>
+
+        <link rel="stylesheet" href="/public/jqmobile/jquery.mobile-1.0.min.css">
+        <link rel="stylesheet" href="/public/css/jqmobile-patch.css">
+        <% if System::get_property('platform') == 'APPLE' %>
+            <link href="/public/jqmobile/jquery-mobile-iphone.css" type="text/css" rel="stylesheet"/>
+        <% end %>
+
+        <script type="text/javascript">
+            $(document).bind("mobileinit", function(){
+                // jQuery-Mobile init options initialization goes here. For example, you may
+                // enable automatically generated 'Back' buttons on headers this way:
+                //$.mobile.page.prototype.options.addBackBtn = true;
+
+                // You can disable (with false value) or change page loading message
+                $.mobile.loadingMessage = false;
+                //$.mobile.loadingMessage = "loading"; // it is default value
+
+                // For documented init options look here:
+                // http://jquerymobile.com/demos/1.0/#/demos/1.0/docs/api/globalconfig.html
+
+                // For poorly documented options search for ".prototype.options"
+                // in the jQuery Mobile source code
+
+                // Rhodes custom option!
+                // how long to wait transition end before "loading.." message will be shown
+                $.mobile.loadingMessageDelay = 300; // in ms
+
+                //$.mobile.touchOverflowEnabled = true;
+                $.mobile.minScrollBack = 0;
+                $.mobile.defaultPageTransition = 'none';
+            });
+        </script>
+        <script type="text/javascript" charset="utf-8" src="/public/jqmobile/jquery.mobile-1.0.js"></script>
+        <script type="text/javascript" charset="utf-8" src="/public/js/jqmobile-patch.js"></script>
+        <script type="text/javascript" charset="utf-8" src="/public/js/jquery.endless-scroll.js"></script>
+        <script type="text/javascript">
+            function getEndlessData() {
+                var str = "";
+                for (var i = 0; i < 20; i++) {
+                    str = str + "<li>"
+                            + "  <a href='#'>"
+                            + "    Test product"
+                            + "  </a>"
+                            + "</li>";
+                }
+                var endless = $("div.ui-page-active ul.endless");
+                var last_item = endless.children("li:last");
+                last_item.after(str);
+                endless.listview("refresh");
+                return "";
+            }
+
+            $("#endlesspage").live('pageinit', function(event) {
+                var endless = null;
+
+                // It looks like fireOnce=true option of endlessScroll
+                // quite works unstable (so far it is version 1.4.8),
+                // so using lock variable here.
+                // Without this lock callback fired really twice each
+                // time on Google Nexus One. Also it fired twice from
+                // time to time on other browsers.
+                var inProgress = false;
+
+                $(document).endlessScroll({
+                    // let it be, but no much hope so far
+                    fireOnce: true,
+                    bottomPixels: 200,
+                    callback: function(i) {
+                        // our own "fireOnce" feature
+                        if (inProgress) return;
+                        inProgress = true;
+
+                        // we don't need to perform this lookup every time
+                        endless = endless || $("div.ui-page-active ul.endless");
+
+                        //alert('scroll: '+i);
+                        //console.log(i);
+
+                        // it scrolls page top every time, so unable to be used
+                        //$.mobile.showPageLoadingMsg('loading..');
+
+                        // turn "loading" message on in the last item
+                        // look for definition in the /public/css/application.css
+                        endless.addClass("loading");
+
+                        $.get('/app/Product/getpage?page=' + i, function(data) {
+                            // we cannot select last item in advance, because it
+                            // may be not the last one at moment of responce
+                            var last_item = endless.children("li:last");
+                            last_item.after(data);
+                            endless.listview("refresh");
+
+                            // turn "loading" message off in the last item
+                            endless.removeClass("loading");
+                            //$.mobile.hidePageLoadingMsg();
+                            inProgress = false;
+                        });
+                    },
+                    off_data: getEndlessData
+                });
+            });
+        </script>
+
+<% end %>
+
+    <% if System::get_property('platform') == 'APPLE' %>
+        <link href="/public/css/iphone.css" type="text/css" rel="stylesheet"/>
+    <% elsif System::get_property('platform') == 'ANDROID' %>
+        <link href="/public/css/android.css" type="text/css" rel="stylesheet"/>
+    <% elsif is_bb6 %>
+        <link href="/public/css/android.css" type="text/css" rel="stylesheet"/>
+    <% elsif System::get_property('platform') == 'Blackberry' %>
+        <link href="/public/css/blackberry.css" type="text/css" rel="stylesheet"/>
+    <% elsif System::get_property('platform') == 'WP7' %>
+	    <link href="/public/css/windows_mobile.css" type="text/css" rel="stylesheet"/>
+		<script src="/public/js/wp7.js" type="text/javascript"></script>
+    <% elsif System::get_property('platform') == 'WINDOWS' %>
+	    <link href="/public/css/windows_mobile.css" type="text/css" rel="stylesheet"/>
+    <% elsif System::get_property('webview_framework') =~ /^WEBKIT/ %>
+        <link href="/public/css/android.css" type="text/css" rel="stylesheet"/>
+    <% end %>
+
+    <link href="/public/css/application.css" type="text/css" rel="stylesheet"/>
+
+</head>
+
+<body
+<% if is_bb6 %>
+	data-do-fix-forms="true"
+<% elsif System::get_property('platform') == 'WP7' %>
+	onload="wp7_change_forms_action_to_get()"
+<% end %>
+	>
+    <%= @content %>
+</body>
+
+</html>

@@ -126,4 +126,9 @@ module ApplicationHelper
     @caller_request = Rho::JSON.parse(@params['caller_request']) if @params['caller_request']
   end
   
+  def is_tablet?
+    width = System.get_property('screen_orientation') == 'portrait' ? System.get_property('real_screen_width') : System.get_property('real_screen_height')
+    return width.to_i > 480 ? true : false
+  end
+  
 end

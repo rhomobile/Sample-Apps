@@ -1,0 +1,7 @@
+rhodes_path='/Library/Ruby/Gems/1.8/gems/rhodes-3.2.2'
+app_name='EndlessScroll'
+reload_app_changes=0
+debug_port=
+debug_host='127.0.0.1'
+platform='iphone'
+ext_path=/Library/Ruby/Gems/1.8/gems/rhodes-3.2.2/lib/extensions/json;

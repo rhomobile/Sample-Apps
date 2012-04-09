@@ -20,7 +20,7 @@ iphone:
   BundleURLScheme: endlessscroll
   provisionprofile: 
   BundleIdentifier: com.rhomobile.endlessscroll
-  sdk: iphonesimulator4.3
+  sdk: iphonesimulator5.0
   entitlements: 
   codesignidentity: 
   configuration: Release

@@ -1,0 +1,37 @@
+<div data-role="page" id="endlesspage" data-dom-cache="true" >
+
+
+
+	<div data-role="header" data-position="inline" 
+	 style="width:100%; height: 60px; position:fixed; top:0px; left:0px; background: #fff; border-bottom: 1px solid black; margin: 0; padding: 2px 0 0 2px">
+    <a href="<%= Rho::RhoConfig.start_path %>" class="ui-btn-left" data-icon="home" data-direction="reverse" <%= "data-ajax='false'" if is_bb6 %>>
+      Home
+    </a>
+    <a href="<%= url_for :action => :new %>" class="ui-btn-right" data-icon="plus" style="margin-right: 3px;">
+      New
+    </a>
+    <input id="searchbox" name="searchbox" value="" onkeyup="ajaxsearchdelay(this);" style=" margin-left: 2%; width: 94%"/>
+
+  </div>
+
+  <div data-role="content" style="margin-top: 62px">
+    <ul data-role="listview" class="endless" id="productlist">
+      <% i = 0 %>
+      <% @products.each do |product| %>
+      
+          <li style="background: <%= i % 2 == 0 ? "#f5f5f5" : "#fff" %>; height: 48px;">
+            <a href="<%= url_for :action => :show, :id => product.object %>">
+            <img src="/public/images/cart_icon.png"></img>
+              <h1><%= product.name %></h1>
+              <p><%= product.brand %></p>
+              <p><%= product.price %></p>
+              
+            </a>
+          </li>
+      <% i = i + 1 %>
+      <% end %>
+    </ul>
+  </div>
+
+</div>
+

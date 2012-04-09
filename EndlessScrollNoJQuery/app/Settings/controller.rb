@@ -6,6 +6,10 @@ require 'helpers/browser_helper'
 class SettingsController < Rho::RhoController
   include BrowserHelper
   
+  def rotate
+    WebView.refresh
+  end
+  
   def index
     @msg = @params['msg']
     render

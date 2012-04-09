@@ -44,6 +44,19 @@ function getPage(url,execute)
 	return -1;
 }
 
+function ajaxsearchdelay(sender)
+{
+  window.setTimeout("ajaxsearch('"+sender.value+"')",200);
+}
+
+function ajaxsearch(sender) {
+	var productlist = document.getElementById('productlist');
+	var href = '/app/Product/search?q=' + sender;
+	var data = getPage(href,false);
+	productlist.innerHTML = data;
+	console.log(sender.value);
+}
+
 function goBack(href) {
 	var prevPage = document.getElementById('prevPage');
 	var currentPage = document.getElementById('currentPage');
@@ -128,6 +141,33 @@ function loadHandler(event) {
 }
 
 function hashHandler(event) {
+}
+
+function hitAjax(index) {
+	var parent = document.getElementById("concurrent");
+	var newli = document.createElement("LI");
+
+	var href = '/app/Product/slow?q=' + index;
+	getPage(href,false);
+	console.log(index);
+	
+	newli.innerHTML = 'Request ' + index + ' returned';
+	parent.appendChild(newli);
+	
+}
+
+function ajaxtest() {
+	var i=0;
+	var parent = document.getElementById("concurrent");
+	var newli = document.createElement("LI");
+
+	newli.innerHTML = 'Starting Concurrent test, please wait.';
+	parent.appendChild(newli);
+
+	for (i=0;i<=20;i++)
+	{
+		setTimeout('hitAjax('+i+');',500);
+	}
 }
 
 window.onload = loadHandler;
